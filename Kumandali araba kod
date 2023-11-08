@@ -1,0 +1,117 @@
+#define sagmotorE 12
+#define sagmotor1 11
+#define sagmotor2 10
+
+#define solmotorE 7
+#define solmotor1 9
+#define solmotor2 8
+
+#include <IRremote.h>
+
+int RECV_PIN = 2;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+
+#define CH1 0xFFA25D
+#define CH 0xFF629D
+#define CH2 0xFFE21D
+#define PREV 0xFF22DD
+#define NEXT 0xFF02FD
+#define PLAYPAUSE 0xFFC23D
+#define VOL1 0xFFE01F
+#define VOL2 0xFFA857
+#define EQ 0xFF906F
+#define BUTON0 0xFF6897
+#define BUTON100 0xFF9867
+#define BUTON200 0xFFB04F
+#define BUTON1 0xFF30CF
+#define BUTON2 0xFF18E7
+#define BUTON3 0xFF7A85
+#define BUTON4 0xFF10EF
+#define BUTON5 0xFF38C7
+#define BUTON6 0xFF5AA5
+#define BUTON7 0xFF42BD
+#define BUTON8 0xFF4AB5
+#define BUTON9 0xFF52AD
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(sagmotorE, OUTPUT) ;
+  pinMode(sagmotor1, OUTPUT); 
+  pinMode(sagmotor2, OUTPUT) ;
+
+  pinMode(solmotorE, OUTPUT) ;
+  pinMode(solmotor1, OUTPUT); 
+  pinMode(solmotor2, OUTPUT) ;
+  irrecv.enableIRIn();
+  Serial.println("Lütfen Arabanın Hangi Hareket Yapacagını Seri Monitore Giriniz[Ileri(i), Geri(g), Saga don(x), Sola Don(y)]");
+}
+
+void loop() {
+  if (irrecv.decode(&results))
+  {
+    if (results.value == BUTON2)
+      ileri(); 
+    if (results.value == BUTON8)   
+      geri();   
+    if (results.value == BUTON4)   
+      sol();      
+    if (results.value == BUTON6) 
+      sag();  
+    if (results.value == BUTON5)
+      dur();    
+    irrecv.resume();  
+  }
+
+}
+  
+
+
+void ileri(){
+  digitalWrite(sagmotor1,HIGH);
+  digitalWrite(sagmotor2,LOW);
+  digitalWrite(sagmotorE,HIGH);
+
+
+  digitalWrite(solmotor1, LOW);
+  digitalWrite(solmotor2,HIGH);
+  digitalWrite(solmotorE,HIGH);
+}
+
+
+void geri(){
+  digitalWrite(sagmotor1, LOW);
+  digitalWrite(sagmotor2,HIGH);
+  digitalWrite(sagmotorE,HIGH);
+
+  digitalWrite(solmotor1, HIGH);
+  digitalWrite(solmotor2,LOW);
+  digitalWrite(solmotorE,HIGH);
+}
+void sag(){
+  digitalWrite(sagmotor1, HIGH);
+  digitalWrite(sagmotor2,LOW);
+  digitalWrite(sagmotorE,HIGH);
+
+  digitalWrite(solmotor1, HIGH);
+  digitalWrite(solmotor2,LOW);
+  digitalWrite(solmotorE,HIGH);
+}
+void sol(){
+  digitalWrite(sagmotor1, LOW);
+  digitalWrite(sagmotor2,HIGH);
+  digitalWrite(sagmotorE,HIGH);
+
+  digitalWrite(solmotor1, LOW);
+  digitalWrite(solmotor2,HIGH);
+  digitalWrite(solmotorE,HIGH);
+}
+void dur(){
+  digitalWrite(sagmotor1, LOW);
+  digitalWrite(sagmotor2,LOW);
+  digitalWrite(sagmotorE,LOW);
+
+  digitalWrite(solmotor1, LOW);
+  digitalWrite(solmotor2,LOW);
+  digitalWrite(solmotorE,LOW) ;
+}
